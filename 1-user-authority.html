@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>用户权限</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      div {
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <label>用户标识user_Flag<input type="text" id="userFlag" /></label>
+    </div>
+    <div>
+      用户操作属性
+      <label><input name="operation" type="checkbox" /> 可新建</label>
+      <label><input name="operation" type="checkbox" /> 可继承 </label>
+    </div>
+    <div>
+      用户继承属性
+      <label><input name="inherit" type="checkbox" /> 父节点</label>
+      <label><input name="inherit" type="checkbox" /> 子节点</label>
+      <label><input name="inherit" type="checkbox" /> 兄弟节点 </label>
+    </div>
+    <script type="module">
+        import { getAuthority } from './1-user-authority.js';
+        document.querySelector('#userFlag').addEventListener('change', function() {
+            const userFlag = this.value;
+            const operation = getAuthority(userFlag.charAt(0));
+            const inherit = getAuthority(userFlag.charAt(1));
+            checkAuthority('operation', operation);
+            checkAuthority('inherit', inherit);
+        });
+        function checkAuthority(name, string) {
+            const node = document.all[name];
+            for (let i = 0; i < string.length; i ++) {
+                node[i] && (node[i].checked = string[i] === '1');
+            }
+        }
+    </script>
+  </body>
+</html>
